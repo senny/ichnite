@@ -20,6 +20,6 @@ class IntegrationTest < IchniteTest
     ensure
       $stdout = STDOUT
     end
-    assert_equal "event=request_served", output.string
+    assert_equal "event=request_served\n", output.string
   end
 end
