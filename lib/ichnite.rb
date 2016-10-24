@@ -47,7 +47,9 @@ module Ichnite
       if defined?(Rails)
         Ichnite::Logger.new(Rails.logger)
       else
-        Ichnite::Logger.new($stdout)
+        inner = ::Logger.new($stdout)
+        inner.formatter =  proc { |_level, _time, _prog, msg| msg }
+        Ichnite::Logger.new(inner)
       end
   end
 
