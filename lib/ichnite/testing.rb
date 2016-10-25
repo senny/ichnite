@@ -16,8 +16,9 @@ module Ichnite
       @buffer.truncate(0)
     end
 
-    def log(event, data)
-      @events << [event, data]
+    def emit(data)
+      event = data.dup
+      @events << [event.delete(:event), event]
       super
     end
 
@@ -32,15 +33,23 @@ module Ichnite
     end
 
     def assert_ichnite_log(expected)
-      assert_equal [expected], ichnite_log_lines
+      assert_equal [expected], ichnite_logs
     end
 
     def assert_ichnite_logs(*expected)
-      assert_equal expected, ichnite_log_lines
+      assert_equal expected, ichnite_logs
     end
 
-    def ichnite_log_lines
+    def assert_ichnite_events(*expected)
+      assert_equal expected, ichnite_events
+    end
+
+    def ichnite_logs
       ichnite_logger.output.split("\n").map { |line| line.split("INFO -- : ").last }
+    end
+
+    def ichnite_events
+      ichnite_logger.events
     end
 
     def ichnite_logger
