@@ -5,7 +5,7 @@ class ContextTest < IchniteTest
     Ichnite.enter job_id: '123456', job_class: 'SampleJob'
     Ichnite.log(:invoice_sent, customer_id: 234, total: 48.35)
 
-    assert_log "event=invoice_sent job_id=123456 job_class=SampleJob customer_id=234 total=48.35"
+    assert_ichnite_log "event=invoice_sent job_id=123456 job_class=SampleJob customer_id=234 total=48.35"
   end
 
   def test_enter_many
@@ -13,7 +13,7 @@ class ContextTest < IchniteTest
     Ichnite.enter job_class: 'SampleJob'
     Ichnite.log(:invoice_sent, customer_id: 234, total: 48.35)
 
-    assert_log "event=invoice_sent job_id=123456 job_class=SampleJob customer_id=234 total=48.35"
+    assert_ichnite_log "event=invoice_sent job_id=123456 job_class=SampleJob customer_id=234 total=48.35"
   end
 
   def test_enter_block
@@ -27,7 +27,7 @@ class ContextTest < IchniteTest
     end
     Ichnite.log(:five)
 
-    assert_logs(
+    assert_ichnite_logs(
       "event=one",
       "event=two job_id=123456",
       "event=three job_id=123456 job_class=123456",
@@ -47,7 +47,7 @@ class ContextTest < IchniteTest
     end
     Ichnite.log(:two)
 
-    assert_logs(
+    assert_ichnite_logs(
       "event=one",
       "event=not_implemented",
       "event=two"
@@ -60,7 +60,7 @@ class ContextTest < IchniteTest
     Ichnite.leave :job_id
     Ichnite.log(:invoice_sent, customer_id: 234, total: 48.35)
 
-    assert_log "event=invoice_sent job_class=SampleJob customer_id=234 total=48.35"
+    assert_ichnite_log "event=invoice_sent job_class=SampleJob customer_id=234 total=48.35"
   end
 
   def test_leave_many
@@ -69,7 +69,7 @@ class ContextTest < IchniteTest
     Ichnite.leave :job_id, :job_class
     Ichnite.log(:invoice_sent, customer_id: 234, total: 48.35)
 
-    assert_log "event=invoice_sent customer_id=234 total=48.35"
+    assert_ichnite_log "event=invoice_sent customer_id=234 total=48.35"
   end
 
   def test_leave_all
@@ -78,7 +78,7 @@ class ContextTest < IchniteTest
     Ichnite.leave
     Ichnite.log(:invoice_sent, customer_id: 234, total: 48.35)
 
-    assert_log "event=invoice_sent customer_id=234 total=48.35"
+    assert_ichnite_log "event=invoice_sent customer_id=234 total=48.35"
   end
 
   def test_augment
@@ -87,6 +87,6 @@ class ContextTest < IchniteTest
     end
     Ichnite.log(:message_received)
 
-    assert_log "event=message_received level=info"
+    assert_ichnite_log "event=message_received level=info"
   end
 end
