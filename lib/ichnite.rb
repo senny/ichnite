@@ -44,8 +44,8 @@ module Ichnite
 
   def self.default_logger
     @default_logger ||=
-      if defined?(Rails)
-        Ichnite::Logger.new(Rails.logger)
+      if defined?(::Rails) && ::Rails.respond_to?(:logger)
+        Ichnite::Logger.new(::Rails.logger)
       else
         inner = ::Logger.new($stdout)
         inner.formatter =  proc { |_level, _time, _prog, msg| "#{msg}\n" }

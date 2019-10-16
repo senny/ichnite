@@ -1,0 +1,1 @@
+require "ichnite/rails/railtie"
